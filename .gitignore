@@ -1,0 +1,54 @@
+# === Global ===
+*.log
+*.tmp
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
+
+# === STM32CubeIDE ===
+# Build folders
+**/Debug/
+**/Release/
+**/build/
+**/*.elf
+**/*.hex
+**/*.bin
+**/*.map
+**/*.lst
+
+# IDE metadata
+**/.settings/
+**/.project
+**/.cproject
+**/.mxproject
+**/.idea/
+
+# CubeMX generated backups
+**/*_backup/
+**/*.ioc.bak
+
+# === ESP-IDF ===
+# Build and flash outputs
+esp32/firmware/build/
+*.bin
+*.elf
+*.map
+
+# ESP-IDF SDK configuration
+sdkconfig
+sdkconfig.old
+
+# CMake and Ninja artifacts
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Python virtualenv (if used)
+.env/
+.venv/
+venv/
+
+# === VSCode (optional) ===
+.vscode/
