@@ -18,10 +18,12 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "usart.h"
+#include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -35,13 +37,14 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+#define MAJOR 0   //APP Major version Number
+#define MINOR 1   //APP Minor version Number
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+const uint8_t APP_Version[2] = { MAJOR, MINOR };
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -82,8 +85,10 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-
+  printf("Starting Application(%d.%d)\n", APP_Version[0], APP_Version[1] );
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -93,6 +98,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	HAL_GPIO_WritePin( GPIOB, GPIO_PIN_7, GPIO_PIN_SET );
+	HAL_Delay(1000);    //1 Sec delay
+	HAL_GPIO_WritePin( GPIOB, GPIO_PIN_7, GPIO_PIN_RESET );
+	HAL_Delay(1000);  //1 Sec delay
   }
   /* USER CODE END 3 */
 }
@@ -139,7 +148,23 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+/**
+  * @brief Print the characters to UART (printf).
+  * @retval int
+  */
+#ifdef __GNUC__
+  /* With GCC, small printf (option LD Linker->Libraries->Small printf
+     set to 'Yes') calls __io_putchar() */
+int __io_putchar(int ch)
+#else
+int fputc(int ch, FILE *f)
+#endif /* __GNUC__ */
+{
+  /* Place your implementation of fputc here */
+  /* e.g. write a character to the UART3 and Loop until the end of transmission */
+  HAL_UART_Transmit(&huart3, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+  return ch;
+}
 /* USER CODE END 4 */
 
 /**
